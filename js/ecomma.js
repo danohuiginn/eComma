@@ -606,6 +606,9 @@ var comment_list = Array();
     $('.pane-node-comments', context).attr('id','pane-node-comments');
     $('.pane-community-tags-0', context).attr('id','pane-community-tags-0');
     $('.pane-node-comments', context).prepend('<input type ="button" class="form-submit comment_export" value ="Download comments" />');
+    if(!Drupal.settings.ecomma.ecomma_comment_thread_show){
+	$('.pane-node-comments').hide();
+	}
     $('.comment_export').click(function(){
       window.location = base_url + '/ecomma_comments_export/' + nid;
     });

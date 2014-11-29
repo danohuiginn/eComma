@@ -26,6 +26,29 @@ function ecomma_help($path, $arg) {
   }
 }
 
+// module configuration page
+
+function ecomma_admin(){
+    $form = array();
+    $setting_labels = array(
+        'ecomma_word_cloud_show' => 'Show word cloud?',
+        'ecomma_tag_details_show' => 'Show tag cloud?',
+        'ecomma_comment_thread_show' => 'Show comment thread?',
+        'ecomma_comment_cloud_show' => 'Show comment cloud?',
+        'ecomma_user_annotation_total_show' => 'Show list of users with annotation count?');
+    // word cloud, tag cloud
+    foreach($setting_labels as $settingname => $label){
+        $form[$settingname] = array(
+            '#type' => 'checkbox',
+            '#title' => t($label),
+            '#default_value' => variable_get($settingname, 1),
+        );
+    }
+
+    return system_settings_form($form);
+}
+
+
 /**
  * Implements hook_menu().
  */
@@ -81,6 +104,14 @@ function ecomma_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'includes/ecomma.ajax.inc',
   );
+    $items['admin/config/ecomma'] = array(
+        'title' => 'eComma',
+        'description' => 'configure eComma',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('ecomma_admin'),
+        'access arguments' => array('administer eComma settings'),
+        'type' => MENU_NORMAL_ITEM,
+    );
 
   return $items;
 }
@@ -331,6 +362,7 @@ function ecomma_form_alter(&$form, &$form_state, $form_id) {
             'base_url_var' => $base_url,
             'user_role' => $user_role,
             'ecommaToken' => drupal_get_token(),
+            'ecomma_comment_thread_show' => variable_get('ecomma_comment_thread_show', 1),
           )),
         'type' => 'setting',
       );
@@ -575,7 +607,7 @@ function ecomma_block_info() {
   $blocks['ecomma_word_cloud'] = array(
     'info' => t('eComma Word Cloud'),
     'cache' => DRUPAL_NO_CACHE,
-  );
+    );
   $blocks['ecomma_tag_details'] = array(
     'info' => t('eComma Tag Details'),
     'cache' => DRUPAL_NO_CACHE,
@@ -597,6 +629,11 @@ function ecomma_block_info() {
  */
 function ecomma_block_view($delta = '') {
   global $user;
+  
+  // disable according to config settings
+  if(!variable_get($delta . '_show', 1)){
+      return array();
+  }
 
   if (ctype_digit(arg(1))) {
     $node = menu_get_object();

@@ -34,11 +34,32 @@
       <div class="inside">
         <div id="tabs-icons">
             <ul>
+<?php if(variable_get('ecomma_word_cloud_show', 1)) {  ?>
+
           <li class="words"><a href="#pane-ecomma-0" title="word cloud"></a></li>
+
+<?php };
+    if(variable_get('ecomma_tag_cloud_show', 1)){
+    ?>
+
           <li class="tags"><a href="#pane-community-tags-0" title="tag cloud"></a></li>
+<?php
+               };
+if(variable_get('ecomma_comment_thread_show', 1)){
+    ?>
           <li class="comments"><a href="#pane-node-comments" title="comment thread"></a></li>
+<?php };
+        if(variable_get('ecomma_comment_cloud_show', 1)){
+    ?>
+
             <li class="comments_all_cloud"><a href="#pane-ecomma-2" title="comment cloud"></a></li>
+<?php };
+    if(variable_get('ecomma_user_annotation_total_show', 1)){
+    ?>
+
             <li class="annotation_count"><a href="#pane-ecomma-3" title="list of users with annotation count"></a></li>
+<?php };
+                   ?>
           </ul>
            <?php print $content['right']; ?>
         </div>
