@@ -363,6 +363,9 @@ function ecomma_form_alter(&$form, &$form_state, $form_id) {
             'user_role' => $user_role,
             'ecommaToken' => drupal_get_token(),
             'ecomma_comment_thread_show' => variable_get('ecomma_comment_thread_show', 1),
+            // only collect comments if we are also displaying them somehow
+            'ecomma_comment_form_show' => (variable_get('ecomma_comment_thread_show', 1)
+                                           || variable_get('ecomma_comment_cloud_show', 1) ),
           )),
         'type' => 'setting',
       );

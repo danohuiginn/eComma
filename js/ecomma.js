@@ -186,7 +186,11 @@ var comment_list = Array();
       $('.floating-box #comment-form label span', context).remove();
       $('#comment-form', context).addClass('tab_content');
       $('#comment-form', context).append('<div id ="comment_thread" />');
-      $('.floating-box .ecomma_tabs', context).append('<li class ="active"><a href ="#community-tags-form">' + Drupal.t('Add Tag') + '</a></li><li><a href ="#comment-form">' + Drupal.t('Add Comment') + '</a></li>');
+      var tab_headings = '<li class ="active"><a href ="#community-tags-form">' + Drupal.t('Add Tag') + '</a></li>'
+      if(Drupal.settings.ecomma.ecomma_comment_form_show){
+	      tab_headings += '<li><a href ="#comment-form">' + Drupal.t('Add Comment') + '</a></li>';
+	  }
+      $('.floating-box .ecomma_tabs', context).append(tab_headings);
       $('.floating-box #selection', context).append('<h3>' + Drupal.t('Your selection') + '</h3>');
       $('.floating-box #selection', context).append('<div class ="ec-warning">' + Drupal.t('eComma couldn\'t understand your selection.<br /><b>Please try again.</b>') + '</div>');
       $('.floating-box #selection', context).append('<p id ="ec-selection-text" class ="ec-selection-text"></p>');
